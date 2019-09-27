@@ -140,38 +140,4 @@ class Saison
     {
         return $this->journees;
     }
-
-    /**
-     * Add participant
-     *
-     * @param \AppBundle\Entity\Coach $participant
-     *
-     * @return Saison
-     */
-    public function addParticipant(\AppBundle\Entity\Coach $participant)
-    {
-        $this->participants[] = $participant;
-
-        return $this;
-    }
-
-    /**
-     * Remove participant
-     *
-     * @param \AppBundle\Entity\Coach $participant
-     */
-    public function removeParticipant(\AppBundle\Entity\Coach $participant)
-    {
-        $this->participants->removeElement($participant);
-    }
-
-    /**
-     * Get participants
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getParticipants()
-    {
-        return $this->participants;
-    }
 }
