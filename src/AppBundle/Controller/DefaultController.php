@@ -23,10 +23,6 @@ class DefaultController extends Controller
         ]);
     }
 
-    // src/AppBundle/Controller/DefaultController.php
-
-
-
     public function createAction()
     {
         // you can fetch the EntityManager via $this->getDoctrine()

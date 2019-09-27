@@ -3,10 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CycleRepository")
+ * @UniqueEntity("name");
  */
 class Cycle
 {
@@ -19,6 +23,7 @@ class Cycle
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $name;
 
@@ -91,5 +96,29 @@ class Cycle
         $this->saisons = $saisons;
 
         return $this;
+    }
+
+    /**
+     * Add saison
+     *
+     * @param \AppBundle\Entity\Saison $saison
+     *
+     * @return Cycle
+     */
+    public function addSaison(\AppBundle\Entity\Saison $saison)
+    {
+        $this->saisons[] = $saison;
+
+        return $this;
+    }
+
+    /**
+     * Remove saison
+     *
+     * @param \AppBundle\Entity\Saison $saison
+     */
+    public function removeSaison(\AppBundle\Entity\Saison $saison)
+    {
+        $this->saisons->removeElement($saison);
     }
 }
