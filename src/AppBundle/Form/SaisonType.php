@@ -5,11 +5,10 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use AppBundle\Entity\Saison;
-use AppBundle\Entity\Cycle;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SaisonType extends AbstractType
@@ -18,8 +17,10 @@ class SaisonType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['label' => 'Saison : '])
-            // TODO: faire une liste deroulante pour le choix du cycle
-            ->add('cycle', ChoiceType::class, [])
+            ->add('cycle', EntityType::class, [
+                'class' => 'AppBundle:Cycle',
+                'choice_label' => 'name',
+                ])
             ->add('save', SubmitType::class, ['label' => 'Enregistrer'])
         ;
     }

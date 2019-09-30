@@ -2,11 +2,6 @@
 
 {% block body %}
     {{ form_start(form) }}
-        {{form_errors(form)}}
-
-        {{form_row(form.name)}}
-        {{form_row(form.cycle.name)}}
-
-    
+    {{ form_widget(form) }}    
     {{ form_end(form) }}
 {% endblock %}
