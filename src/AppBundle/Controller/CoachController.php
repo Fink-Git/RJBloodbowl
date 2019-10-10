@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 class CoachController extends Controller
 {
     /**
-     * @Route("/newCoach", name="newCoach")
+     * @Route("/Coach/new", name="newCoach")
      */
     public function newCoachAction(Request $request)
     {

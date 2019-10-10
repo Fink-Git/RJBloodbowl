@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\AppBundle;
 use AppBundle\Entity\Coach;
 use AppBundle\Entity\Journee;
 use AppBundle\Entity\Rencontre;
@@ -16,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class LigueController extends Controller
 {
     /**
-     * @Route("/Inscription", name="inscription")
+     * @Route("/Ligue/Inscription", name="inscription")
      */
     public function InscriptionAction(Request $request){
         $form = $this->createForm(InscriptionType::class);
@@ -49,7 +50,7 @@ class LigueController extends Controller
     }
 
     /**
-     * @Route("/Tirage", name="tirage")
+     * @Route("/Ligue/Tirage", name="tirage")
      */
     public function tirageAction(Request $request){
         $form = $this->createForm(TirageType::class);
@@ -65,12 +66,48 @@ class LigueController extends Controller
                                     $form->get('nbPoule')->getData(),
                                     $form->get('nbQualif')->getData());
 
-            // recuperation des donnees crees precedement 
+            // redirection pour l'affichage des journees
+            $this->redirectToRoute('affichageSaison', ['saisonid' => $saison->getId()]) ;
         }   
 
         return $this->render('RJBloodbowl/tirage.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/Ligue/Affichage/{saisonid}", name="affichageSaison")
+     */
+    public function matchSaisonAction($saisonid=null){
+        /** @var Saison $saison */
+        $saison = null;
+        if (empty($saisonid) | !is_numeric($saisonid)){
+            $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->getDerniereSaison();
+        }
+        else{
+            $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->find($saisonid);
+            if (empty($saison)){
+                $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->getDerniereSaison();
+            }
+        }
+        $journees = $saison->getJournees();
+        $tableaumatch = [];
+        foreach ($journees as $journee) {
+            /** @var Journee $journee */
+            $rencontres = $journee->getRencontres();
+            foreach ($rencontres as $rencontre) {
+                /** @var Rencontre $rencontre */
+                $coachs = $rencontre->getCoachs();
+                $adversaires = [];
+                foreach ($coachs as $coach) {
+                    /** @var Coach $coach */
+                    $adversaires[] = $coach->getName();
+                }
+                $tableaumatch[$journee->getName()][] = $adversaires;
+            }
+        }
+
+        return $this->render('RJBloodbowl/affichage.html.twig', ['saison' => $tableaumatch]);
     }
 
     /**

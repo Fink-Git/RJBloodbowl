@@ -10,4 +10,11 @@ namespace AppBundle\Repository;
  */
 class SaisonRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getDerniereSaison(){
+        return $this->createQueryBuilder('s')
+        ->orderBy('s.id','DESC')
+        ->setMaxResults(1)
+        ->getQuery()
+        ->getSingleResult();
+    }
 }

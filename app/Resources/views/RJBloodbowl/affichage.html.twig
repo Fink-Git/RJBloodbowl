@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for key, journee in saison %}
+        <table>
+        <tr colspan = 2><th > {{ key }} </th></tr>
+        {% for rencontre in journee %}
+            <tr>
+                {% for joueur in rencontre %}
+                    <td> {{ joueur }} </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </table>
+        <br/>
+    {% endfor %}
+{% endblock %}

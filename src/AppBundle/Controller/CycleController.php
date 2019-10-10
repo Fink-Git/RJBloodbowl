@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 class CycleController extends Controller
 {
     /**
-     * @Route("/newCycle", name="newCycle")
+     * @Route("/Cycle/new", name="newCycle")
      */
     public function newCycleAction(Request $request)
     {
