@@ -34,9 +34,16 @@ class Coach
      */
     private $saisons;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Rencontre", inversedBy="coachs")
+     * @ORM\JoinTable(name="coach_rencontres")
+     */
+    private $rencontres;
+
     public function __construct()
     {
         $this->saisons = new ArrayCollection();
+        $this->rencontres = new ArrayCollection();
     }
 
     /**
@@ -105,5 +112,49 @@ class Coach
     public function getSaisons()
     {
         return $this->saisons;
+    }
+
+    /**
+     * Get the value of rencontres
+     */ 
+    public function getRencontres()
+    {
+        return $this->rencontres;
+    }
+
+    /**
+     * Set the value of rencontres
+     *
+     * @return  self
+     */ 
+    public function setRencontres($rencontres)
+    {
+        $this->rencontres = $rencontres;
+
+        return $this;
+    }
+
+    /**
+     * Add rencontre
+     *
+     * @param \AppBundle\Entity\Rencontre $rencontre
+     *
+     * @return Coach
+     */
+    public function addRencontre(\AppBundle\Entity\Rencontre $rencontre)
+    {
+        $this->rencontres[] = $rencontre;
+
+        return $this;
+    }
+
+    /**
+     * Remove rencontre
+     *
+     * @param \AppBundle\Entity\Rencontre $rencontre
+     */
+    public function removeRencontre(\AppBundle\Entity\Rencontre $rencontre)
+    {
+        $this->rencontres->removeElement($rencontre);
     }
 }

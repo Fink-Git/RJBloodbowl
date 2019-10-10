@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,7 +35,16 @@ class Journee
      */
     private $saison;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Rencontre", mappedBy="journee")
+     */
+    private $rencontres;
 
+    public function __construct()
+    {
+        $this->rencontres = new ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -68,5 +78,68 @@ class Journee
     {
         return $this->name;
     }
-}
 
+    /**
+     * Get the value of rencontres
+     */ 
+    public function getRencontres()
+    {
+        return $this->rencontres;
+    }
+
+    /**
+     * Set the value of rencontres
+     *
+     * @return  self
+     */ 
+    public function setRencontres($rencontres)
+    {
+        $this->rencontres = $rencontres;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of saison
+     */ 
+    public function getSaison()
+    {
+        return $this->saison;
+    }
+
+    /**
+     * Set the value of saison
+     *
+     * @return  self
+     */ 
+    public function setSaison($saison)
+    {
+        $this->saison = $saison;
+
+        return $this;
+    }
+
+    /**
+     * Add rencontre
+     *
+     * @param \AppBundle\Entity\Rencontre $rencontre
+     *
+     * @return Journee
+     */
+    public function addRencontre(\AppBundle\Entity\Rencontre $rencontre)
+    {
+        $this->rencontres[] = $rencontre;
+
+        return $this;
+    }
+
+    /**
+     * Remove rencontre
+     *
+     * @param \AppBundle\Entity\Rencontre $rencontre
+     */
+    public function removeRencontre(\AppBundle\Entity\Rencontre $rencontre)
+    {
+        $this->rencontres->removeElement($rencontre);
+    }
+}
