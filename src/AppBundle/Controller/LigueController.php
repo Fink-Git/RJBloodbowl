@@ -116,14 +116,10 @@ class LigueController extends Controller
      * @param int $qualif Nombre de jours pour la phase de qualif
      */
     private function creationJournees($saison, $poules, $qualif){
-        //TODO : Gerer plusieurs poules
+        //TODO : Gerer plusieurs poules et nombre de joueurs impairs
         $participants = $saison->getParticipants();
         if(count($participants) < 2){
             return [];
-        }
-
-        if (count($participants) % 2 === 1){
-            // nb de participants impair, il faut en exclure un par journée
         }
 
         if (empty($qualif)){
@@ -139,7 +135,12 @@ class LigueController extends Controller
 
         // creation de toutes les journees de la saison
         // et des rencontres associes
-        for ($i=1; $i <= $qualif; $i++) { 
+        for ($i=1; $i <= $qualif; $i++) {
+            if (count($participants) % 2 === 1){
+                // nb de participants impair, il faut en exclure un par journée
+                // a chaque journee, ce doit etre une personne differente
+            }
+
             // creation de la journee
             $journee = new Journee();
             $entityManager->persist($journee);

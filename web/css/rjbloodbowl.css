@@ -1,0 +1,23 @@
+table.planning {
+    width: 20%;
+    border: 1px solid black;
+}
+
+table.planning > tbody > tr {
+    border: 1px solid black;
+    text-align: center;
+}
+
+table.planning > tbody > tr > th {
+    border: 1px solid black;
+    background-color: grey;
+}
+
+table.planning > tbody > tr > td {
+    border: 1px solid black;
+}
+
+td.victoire {
+    background-color: green;
+    font-weight: bold;
+}

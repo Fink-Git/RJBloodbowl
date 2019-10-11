@@ -1,9 +1,15 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link href="{{ asset('css/rjbloodbowl.css') }}" rel="stylesheet"/>
+{% endblock %}
+
 {% block body %}
     {% for key, journee in saison %}
-        <table>
-        <tr colspan = 2><th > {{ key }} </th></tr>
+        <table class="planning">
+        <th colspan = 2> {{ key }} </th>
         {% for rencontre in journee %}
             <tr>
                 {% for joueur in rencontre %}
