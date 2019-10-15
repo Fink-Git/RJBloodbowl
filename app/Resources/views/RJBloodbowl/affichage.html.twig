@@ -7,17 +7,10 @@
 {% endblock %}
 
 {% block body %}
-    {% for key, journee in saison %}
-        <table class="planning">
-        <th colspan = 2> {{ key }} </th>
-        {% for rencontre in journee %}
-            <tr>
-                {% for joueur in rencontre %}
-                    <td> {{ joueur }} </td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-        </table>
-        <br/>
-    {% endfor %}
+    {% if action == 'view' %}
+        {{ include('RJBloodbowl/view_saison.html.twig') }}
+    {% endif %}
+    {% if action == 'input' %}
+        {{ include('RJBloodbowl/saisie_match.html.twig') }}
+    {% endif %}
 {% endblock %}

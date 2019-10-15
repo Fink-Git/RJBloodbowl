@@ -2,12 +2,12 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\AppBundle;
 use AppBundle\Entity\Coach;
 use AppBundle\Entity\Journee;
 use AppBundle\Entity\Rencontre;
 use AppBundle\Entity\Saison;
 use AppBundle\Form\InscriptionType;
+use AppBundle\Form\MatchType;
 use AppBundle\Form\TirageType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -67,7 +67,10 @@ class LigueController extends Controller
                                     $form->get('nbQualif')->getData());
 
             // redirection pour l'affichage des journees
-            $this->redirectToRoute('affichageSaison', ['saisonid' => $saison->getId()]) ;
+            $this->redirectToRoute('affichageSaison', [
+                'saisonid' => $saison->getId(),
+                'action' => 'view'
+                ]) ;
         }   
 
         return $this->render('RJBloodbowl/tirage.html.twig', [
@@ -76,20 +79,18 @@ class LigueController extends Controller
     }
 
     /**
-     * @Route("/Ligue/Affichage/{saisonid}", name="affichageSaison")
+     * @Route(
+     *      "/Ligue/Affichage/{action}/{saisonid}", 
+     *      name="affichageSaison",
+     *      requirements={
+     *          "action" : "view|input"
+     *      }
+     * )
      */
-    public function matchSaisonAction($saisonid=null){
+    public function matchSaisonAction($saisonid=null, $action, Request $request){
         /** @var Saison $saison */
-        $saison = null;
-        if (empty($saisonid) | !is_numeric($saisonid)){
-            $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->getDerniereSaison();
-        }
-        else{
-            $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->find($saisonid);
-            if (empty($saison)){
-                $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->getDerniereSaison();
-            }
-        }
+        $saison = $this->saisonParDefaut($saisonid);
+
         $journees = $saison->getJournees();
         $tableaumatch = [];
         foreach ($journees as $journee) {
@@ -107,7 +108,42 @@ class LigueController extends Controller
             }
         }
 
-        return $this->render('RJBloodbowl/affichage.html.twig', ['saison' => $tableaumatch]);
+        //TODO: mecanique pour l'affichage du formulaire de saisie de match
+        //$form_view = null;
+        // if ($action == 'input'){
+        //     $form = $this->createForm(MatchType::class);
+        //     $form->handleRequest($request);
+            
+        //     if ($form->isSubmitted() && $form->isValid()){
+        //     }
+        //     $form_view = $form->createView()
+        // }
+
+        return $this->render('RJBloodbowl/affichage.html.twig', [
+            'saison' => $tableaumatch, 
+            'action' => $action,
+            //'form' => $form_view,
+            ]);
+    }
+
+
+    /**
+     * Renvoie la saison demandé ou la derniere s'il n'y a pas parametres ou que le parametre est KO
+     * 
+     * @param int|null $saisonid id de la saison ou null
+     * @return Saison $saison Objet Saison 
+     */
+    private function saisonParDefaut($saisonid){
+        if (empty($saisonid) | !is_numeric($saisonid)){
+            $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->getDerniereSaison();
+        }
+        else{
+            $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->find($saisonid);
+            if (empty($saison)){
+                $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->getDerniereSaison();
+            }
+        }
+        return $saison;
     }
 
     /**

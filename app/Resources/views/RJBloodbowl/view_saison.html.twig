@@ -1,0 +1,13 @@
+    {% for key, journee in saison %}
+        <table class="planning">
+        <th colspan = 2> {{ key }} </th>
+        {% for rencontre in journee %}
+            <tr>
+                {% for joueur in rencontre %}
+                    <td> {{ joueur }} </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </table>
+        <br/>
+    {% endfor %}
