@@ -107,13 +107,6 @@ class LigueController extends Controller
                 }
                 $adversaires[]=$rencontre->getEnregistre();
                 $tableaumatch[$journee->getName()][$rencontre->getId()] = $adversaires;
-                $matches[$rencontre->getId()] = [
-                    'score_coach1' => $rencontre->getScoreCoach1(),
-                    'score_coach2' => $rencontre->getScoreCoach2(),
-                    'sorties_coach1' => $rencontre->getSortiesCoach1(),
-                    'sorties_coach2' => $rencontre->getSortiesCoach2(),
-                    'enregistre' => $rencontre->getEnregistre(),
-                ];
             }
         }
 
@@ -143,7 +136,6 @@ class LigueController extends Controller
         return $this->render('RJBloodbowl/affichage.html.twig', [
             'saison' => $tableaumatch, 
             'action' => $action,
-            'matches' => $matches,
             'form' => $form_view,
             ]);
     }
