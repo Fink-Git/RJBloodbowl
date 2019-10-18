@@ -93,6 +93,7 @@ class LigueController extends Controller
 
         $journees = $saison->getJournees();
         $tableaumatch = [];
+        $matches = [];
         foreach ($journees as $journee) {
             /** @var Journee $journee */
             $rencontres = $journee->getRencontres();
@@ -104,25 +105,46 @@ class LigueController extends Controller
                     /** @var Coach $coach */
                     $adversaires[] = $coach->getName();
                 }
-                $tableaumatch[$journee->getName()][] = $adversaires;
+                $adversaires[]=$rencontre->getEnregistre();
+                $tableaumatch[$journee->getName()][$rencontre->getId()] = $adversaires;
+                $matches[$rencontre->getId()] = [
+                    'score_coach1' => $rencontre->getScoreCoach1(),
+                    'score_coach2' => $rencontre->getScoreCoach2(),
+                    'sorties_coach1' => $rencontre->getSortiesCoach1(),
+                    'sorties_coach2' => $rencontre->getSortiesCoach2(),
+                    'enregistre' => $rencontre->getEnregistre(),
+                ];
             }
         }
 
-        //TODO: mecanique pour l'affichage du formulaire de saisie de match
-        //$form_view = null;
-        // if ($action == 'input'){
-        //     $form = $this->createForm(MatchType::class);
-        //     $form->handleRequest($request);
+        $form_view = null;
+        if ($action == 'input'){
+            $form = $this->createForm(MatchType::class, $tableaumatch);
+            $form->handleRequest($request);
             
-        //     if ($form->isSubmitted() && $form->isValid()){
-        //     }
-        //     $form_view = $form->createView()
-        // }
+            if ($form->isSubmitted() && $form->isValid()){
+                /** @var Rencontre $match */
+                $match = $this->getDoctrine()->getRepository('AppBundle:Rencontre')
+                    ->find($form->get('match')->getData());
+                
+                $match->setScoreCoach1($form->get('score_coach1')->getData());
+                $match->setScoreCoach2($form->get('score_coach2')->getData());
+                $match->setSortiesCoach1($form->get('sorties_coach1')->getData());
+                $match->setSortiesCoach2($form->get('sorties_coach2')->getData());
+                $match->setEnregistre(true);
+                $this->getDoctrine()->getManager()->flush();
+
+                //TODO: message flash de confirmation d'enregistrement
+                return $this->redirect($request->getUri());
+            }
+            $form_view = $form->createView();
+        }
 
         return $this->render('RJBloodbowl/affichage.html.twig', [
             'saison' => $tableaumatch, 
             'action' => $action,
-            //'form' => $form_view,
+            'matches' => $matches,
+            'form' => $form_view,
             ]);
     }
 
@@ -153,6 +175,7 @@ class LigueController extends Controller
      */
     private function creationJournees($saison, $poules, $qualif){
         //TODO : Gerer plusieurs poules et nombre de joueurs impairs
+        //TODO: Faire un random sur les participants ?
         $participants = $saison->getParticipants();
         if(count($participants) < 2){
             return [];

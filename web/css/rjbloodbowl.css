@@ -18,6 +18,14 @@ table.planning > tbody > tr > td {
 }
 
 td.victoire {
-    background-color: green;
+    background-color: #99cc99;
     font-weight: bold;
+}
+
+select > option.match_joue {
+    background-color: #99cc99;
+}
+
+select > option.match_non_joue {
+    background-color: #ff9999;
 }

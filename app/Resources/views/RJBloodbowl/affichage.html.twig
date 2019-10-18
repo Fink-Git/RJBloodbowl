@@ -8,9 +8,14 @@
 
 {% block body %}
     {% if action == 'view' %}
-        {{ include('RJBloodbowl/view_saison.html.twig') }}
+        {% include('RJBloodbowl/view_saison.html.twig') %}
     {% endif %}
     {% if action == 'input' %}
-        {{ include('RJBloodbowl/saisie_match.html.twig') }}
+        {% include('RJBloodbowl/saisie_match.html.twig') %}
     {% endif %}
+{% endblock %}
+
+{% block javascripts %} 
+    {{ parent() }}
+    <script src="{{ asset('js/rjbloodbowl.js')}}"></script>
 {% endblock %}

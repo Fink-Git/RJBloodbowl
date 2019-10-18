@@ -61,6 +61,13 @@ class Rencontre
      */
     private $sorties_coach2 = 0;
 
+    /**
+     * @var bool
+     * 
+     * @ORM\Column(name="enregistre", type="boolean")
+     */
+    private $enregistre = false;
+
     public function __construct(){
         $this->coachs = new ArrayCollection();
     }
@@ -247,5 +254,29 @@ class Rencontre
     public function removeCoach(\AppBundle\Entity\Coach $coach)
     {
         $this->coachs->removeElement($coach);
+    }
+
+    /**
+     * Set enregistre
+     *
+     * @param boolean $enregistre
+     *
+     * @return Rencontre
+     */
+    public function setEnregistre($enregistre)
+    {
+        $this->enregistre = $enregistre;
+
+        return $this;
+    }
+
+    /**
+     * Get enregistre
+     *
+     * @return boolean
+     */
+    public function getEnregistre()
+    {
+        return $this->enregistre;
     }
 }

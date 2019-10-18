@@ -2,17 +2,47 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Rencontre;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class MatchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //affichage en 2 temps
-        // 1 - Affichage de tous les matchs de la saison dans un select dont la valeur serait JX : Coach1 - Coach2
-        // 2 - Une fois le match validé/selectionné, affichage du formulaire de match pour les scores et les sorties
+        $tableaumatch =  $builder->getData();
+        $matches = [];
+        $match_joue = [];
+        // formattage du select
+        foreach ($tableaumatch as $key_journee => $journee) {
+            foreach ($journee as $key => $match) {
+                $matches[$key_journee . ' - ' . $match[0] . ' vs ' . $match[1] 
+                            . ' - ' . ($match[2]?'Enregistre':'Non Enregistre')] = $key;
+            }
+        }
+
+        $builder
+            ->add('match', ChoiceType::class, [
+                'choices' => $matches,
+                'choice_attr' => function($choice,$key,$value){
+                    if(strstr($key,'Non Enregistre')){
+                        return ['class' => 'match_non_joue'];
+                    }
+                    else {
+                        return ['class' => 'match_joue'];
+                    }
+                },
+            ])
+            ->add('score_coach1', IntegerType::class)
+            ->add('score_coach2', IntegerType::class)
+            ->add('sorties_coach1', IntegerType::class)
+            ->add('sorties_coach2', IntegerType::class)
+            ->add('validate', SubmitType::class, ['label' => 'Enregistrer le match'])
+            ;
+        
     }
+
 }
