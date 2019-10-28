@@ -98,13 +98,10 @@ class LigueController extends Controller
             /** @var Journee $journee */
             $rencontres = $journee->getRencontres();
             foreach ($rencontres as $rencontre) {
-                /** @var Rencontre $rencontre */
-                $coachs = $rencontre->getCoachs();
                 $adversaires = [];
-                foreach ($coachs as $coach) {
-                    /** @var Coach $coach */
-                    $adversaires[] = $coach->getName();
-                }
+                /** @var Rencontre $rencontre */
+                $adversaires[] = $rencontre->getCoach1()->getName();
+                $adversaires[] = $rencontre->getCoach2()->getName();
                 $adversaires[]=$rencontre->getEnregistre();
                 $tableaumatch[$journee->getName()][$rencontre->getId()] = $adversaires;
             }
@@ -204,8 +201,9 @@ class LigueController extends Controller
                     $rencontre = new Rencontre();
                     $entityManager->persist($rencontre);                  
                     $rencontre->setJournee($journee);
-                    $rencontre->addCoach($coach1); 
-                    $coach1->addRencontre($rencontre);
+                    $rencontre->setCoach1($coach1);
+                    // $rencontre->addCoach($coach1); 
+                    // $coach1->addRencontre($rencontre);
 
                     $adversairetrouve = false;
                     foreach ($participants as $coach2) {
@@ -214,8 +212,9 @@ class LigueController extends Controller
                             $coach1 != $coach2 &
                             !$this->aJoue($coach2->getName(), $adversaires, $i) &
                             !$this->aRencontre($coach1->getName(), $adversaires, $coach2->getName())){
-                            $rencontre->addCoach($coach2);
-                            $coach2->addRencontre($rencontre);
+                            $rencontre->setCoach2($coach2);
+                            // $rencontre->addCoach($coach2);
+                            // $coach2->addRencontre($rencontre);
 
                             $adversaires[$coach1->getName()][$i] = $coach2->getName();
                             $adversaires[$coach2->getname()][$i] = $coach1->getName();

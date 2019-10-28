@@ -29,9 +29,16 @@ class Rencontre
     private $journee;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Coach", mappedBy="rencontres")
+     * @ORM\ManyToOne(targetEntity="Coach")
+     * @ORM\JoinColumn(name="coach1_id", referencedColumnName="id")
      */
-    private $coachs;
+    private $coach1;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Coach")
+     * @ORM\JoinColumn(name="coach2_id", referencedColumnName="id")
+     */
+    private $coach2;
 
     /**
      * @var int
@@ -67,30 +74,6 @@ class Rencontre
      * @ORM\Column(name="enregistre", type="boolean")
      */
     private $enregistre = false;
-
-    public function __construct(){
-        $this->coachs = new ArrayCollection();
-    }
-    
-    /**
-     * Get the value of coachs
-     */ 
-    public function getCoachs()
-    {
-        return $this->coachs;
-    }
-
-    /**
-     * Set the value of coachs
-     *
-     * @return  self
-     */ 
-    public function setCoachs($coachs)
-    {
-        $this->coachs = $coachs;
-
-        return $this;
-    }
 
     /**
      * Get the value of id
@@ -233,30 +216,6 @@ class Rencontre
     }
 
     /**
-     * Add coach
-     *
-     * @param \AppBundle\Entity\Coach $coach
-     *
-     * @return Rencontre
-     */
-    public function addCoach(\AppBundle\Entity\Coach $coach)
-    {
-        $this->coachs[] = $coach;
-
-        return $this;
-    }
-
-    /**
-     * Remove coach
-     *
-     * @param \AppBundle\Entity\Coach $coach
-     */
-    public function removeCoach(\AppBundle\Entity\Coach $coach)
-    {
-        $this->coachs->removeElement($coach);
-    }
-
-    /**
      * Set enregistre
      *
      * @param boolean $enregistre
@@ -278,5 +237,53 @@ class Rencontre
     public function getEnregistre()
     {
         return $this->enregistre;
+    }
+
+    /**
+     * Set coach1
+     *
+     * @param \AppBundle\Entity\Coach $coach1
+     *
+     * @return Rencontre
+     */
+    public function setCoach1(\AppBundle\Entity\Coach $coach1 = null)
+    {
+        $this->coach1 = $coach1;
+
+        return $this;
+    }
+
+    /**
+     * Get coach1
+     *
+     * @return \AppBundle\Entity\Coach
+     */
+    public function getCoach1()
+    {
+        return $this->coach1;
+    }
+
+    /**
+     * Set coach2
+     *
+     * @param \AppBundle\Entity\Coach $coach2
+     *
+     * @return Rencontre
+     */
+    public function setCoach2(\AppBundle\Entity\Coach $coach2 = null)
+    {
+        $this->coach2 = $coach2;
+
+        return $this;
+    }
+
+    /**
+     * Get coach2
+     *
+     * @return \AppBundle\Entity\Coach
+     */
+    public function getCoach2()
+    {
+        return $this->coach2;
     }
 }
