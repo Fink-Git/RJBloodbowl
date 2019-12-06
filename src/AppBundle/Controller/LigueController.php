@@ -50,7 +50,7 @@ class LigueController extends Controller
     }
 
     /**
-     * @Route("/Ligue/Tirage", name="tirage")
+     * @Route("Admin/Ligue/Tirage", name="tirage")
      */
     public function tirageAction(Request $request){
         $form = $this->createForm(TirageType::class);

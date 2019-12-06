@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 class SaisonController extends Controller
 {
     /**
-     * @Route("/Saison/new", name="newSaison")
+     * @Route("Admin/Saison/new", name="newSaison")
      */
     public function newSaisonAction(Request $request)
     {
