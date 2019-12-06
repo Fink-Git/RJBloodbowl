@@ -19,8 +19,8 @@ class MatchType extends AbstractType
         // formattage du select
         foreach ($tableaumatch as $key_journee => $journee) {
             foreach ($journee as $key => $match) {
-                $matches[$key_journee . ' - ' . $match[0] . ' vs ' . $match[1] 
-                            . ' - ' . ($match[2]?'Enregistre':'Non Enregistre')] = $key;
+                $matches[$key_journee . ' - ' . $match->getCoach1()->getName() . ' vs ' . $match->getCoach2()->getName() 
+                            . ' - ' . ($match->getEnregistre() ?'Enregistre':'Non Enregistre')] = $key;
             }
         }
 

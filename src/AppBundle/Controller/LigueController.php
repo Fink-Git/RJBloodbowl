@@ -103,7 +103,8 @@ class LigueController extends Controller
                 $adversaires[] = $rencontre->getCoach1()->getName();
                 $adversaires[] = $rencontre->getCoach2()->getName();
                 $adversaires[]=$rencontre->getEnregistre();
-                $tableaumatch[$journee->getName()][$rencontre->getId()] = $adversaires;
+                //$tableaumatch[$journee->getName()][$rencontre->getId()] = $adversaires;
+                $tableaumatch[$journee->getName()][$rencontre->getId()] = $rencontre;
             }
         }
 
@@ -136,7 +137,6 @@ class LigueController extends Controller
             'form' => $form_view,
             ]);
     }
-
 
     /**
      * Renvoie la saison demandé ou la derniere s'il n'y a pas parametres ou que le parametre est KO

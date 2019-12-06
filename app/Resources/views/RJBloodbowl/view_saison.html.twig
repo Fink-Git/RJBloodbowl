@@ -4,9 +4,8 @@
         <th colspan = 2> {{ key }} </th>
         {% for rencontre in journee %}
             <tr>
-                {% for joueur in rencontre %}
-                    <td> {{ joueur }} </td>
-                {% endfor %}
+                <td> {{ rencontre.coach1.name }} </td>
+                <td> {{ rencontre.coach2.name }} </td>
             </tr>
         {% endfor %}
         </table>

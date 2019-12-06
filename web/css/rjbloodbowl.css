@@ -29,3 +29,8 @@ select > option.match_joue {
 select > option.match_non_joue {
     background-color: #ff9999;
 }
+
+div.saisie_match {
+    display: inline-block;
+    width: 49%;
+}
