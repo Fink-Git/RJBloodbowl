@@ -1,21 +1,18 @@
-{# TODO: 
-        Affichage sur 2 lignes coach1, coach2
-#}
+
 {{ form_start(form) }}
 
-{#{{ form_widget(form) }}    #}
-<div> {{ form_row(form.match) }} </div>
+<div class='evidence'> {{ form_row(form.match) }} </div>
 <div>
-<div class='saisie_match'>
-        Coach1 ()
-        {{ form_row(form.score_coach1) }}
-        {{ form_row(form.sorties_coach1)}}
-</div>
-<div class='saisie_match'>
-        Coach2 ()
-        {{ form_row(form.score_coach2) }}
-        {{ form_row(form.sorties_coach2)}}
-</div>
+        <div class='saisie_match'>
+                <div id='coach1' class='evidence'></div>
+                {{ form_row(form.score_coach1) }}
+                {{ form_row(form.sorties_coach1)}}
+        </div>
+        <div class='saisie_match'>
+                <div id='coach2' class='evidence'></div>
+                {{ form_row(form.score_coach2) }}
+                {{ form_row(form.sorties_coach2)}}
+        </div>
 </div>
 <div> {{ form_row(form.validate) }} </div>
 

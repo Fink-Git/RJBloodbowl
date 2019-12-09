@@ -34,3 +34,7 @@ div.saisie_match {
     display: inline-block;
     width: 49%;
 }
+
+div.evidence {
+    font-weight: bold;
+}
