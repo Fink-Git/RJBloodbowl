@@ -27,6 +27,10 @@ class CoachController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($coach);
             $entityManager->flush();
+
+            $this->addFlash('notice', 'Coach créé');
+
+            return $this->redirect($request->getUri());
         }
 
         return $this->render('RJBloodbowl/new_coach.html.twig', [

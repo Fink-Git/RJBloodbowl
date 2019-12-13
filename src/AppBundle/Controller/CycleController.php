@@ -27,6 +27,10 @@ class CycleController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($cycle);
             $entityManager->flush();
+
+            $this->addFlash('notice', 'Cycle créé');
+
+            return $this->redirect($request->getUri());
         }
 
         return $this->render('RJBloodbowl/new_cycle.html.twig', [

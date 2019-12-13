@@ -9,6 +9,11 @@
         {% endblock %}
     </head>
     <body>
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
         {% block body %}{% endblock %}
         {% block javascripts %}
             <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

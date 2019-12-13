@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\Query\Expr\Join;
+
 /**
  * RencontreRepository
  *
@@ -10,4 +12,13 @@ namespace AppBundle\Repository;
  */
 class RencontreRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getAllFromSaison($saisonid){
+        $qb = $this->createQueryBuilder('r')
+            ->leftJoin('AppBundle\Entity\Journee', 'j', Join::WITH ,'r.journee = j.id')
+            ->leftJoin('AppBundle\Entity\Saison', 's', Join::WITH, 'j.saison = s.id')
+            ->where('s.id = :saisonid')
+            ->setParameter('saisonid', $saisonid);
+        
+        return $qb->getQuery()->getResult();
+    }
 }

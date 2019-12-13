@@ -42,6 +42,9 @@ class LigueController extends Controller
             $saison->addParticipant($coach);
             $this->getDoctrine()->getManager()->flush();
             
+            $this->addFlash('notice', 'Le coach ' . $coach->getName() . ' participe a ' . $saison->getName());
+
+            return $this->redirect($request->getUri());
         }
 
         return $this->render('RJBloodbowl/inscription.html.twig', [
@@ -67,7 +70,7 @@ class LigueController extends Controller
                                     $form->get('nbQualif')->getData());
 
             // redirection pour l'affichage des journees
-            $this->redirectToRoute('affichageSaison', [
+            return $this->redirectToRoute('affichageSaison', [
                 'saisonid' => $saison->getId(),
                 'action' => 'view'
                 ]) ;
@@ -98,12 +101,6 @@ class LigueController extends Controller
             /** @var Journee $journee */
             $rencontres = $journee->getRencontres();
             foreach ($rencontres as $rencontre) {
-                $adversaires = [];
-                /** @var Rencontre $rencontre */
-                $adversaires[] = $rencontre->getCoach1()->getName();
-                $adversaires[] = $rencontre->getCoach2()->getName();
-                $adversaires[]=$rencontre->getEnregistre();
-                //$tableaumatch[$journee->getName()][$rencontre->getId()] = $adversaires;
                 $tableaumatch[$journee->getName()][$rencontre->getId()] = $rencontre;
             }
         }
@@ -125,7 +122,8 @@ class LigueController extends Controller
                 $match->setEnregistre(true);
                 $this->getDoctrine()->getManager()->flush();
 
-                //TODO: message flash de confirmation d'enregistrement
+                $this->addFlash('notice', 'Match enregistré');
+
                 return $this->redirect($request->getUri());
             }
             $form_view = $form->createView();
@@ -138,6 +136,81 @@ class LigueController extends Controller
             ]);
     }
 
+    /**
+     * @Route(
+     *      "/Ligue/Classement/{saisonid}", 
+     *      name="classementSaison"
+     * )
+     */
+    public function classementAction($saisonid=null){
+        /** @var Saison $saison */
+        $saison = $this->saisonParDefaut($saisonid);
+
+        $matches = $this->getDoctrine()->getRepository('AppBundle:Rencontre')->getAllFromSaison($saison->getId());        
+        $coachs = $saison->getParticipants();
+
+        $resultat = [];
+        foreach ($coachs as $coach){
+            /** @var Coach $coach */
+            $c = $coach->getName();
+            $resultat[$c]['Points'] = 0;
+            $resultat[$c]['TD'] = 0;
+            $resultat[$c]['Sorties'] = 0;
+            $resultat[$c]['Departage'] = 0;
+        }
+        foreach ($matches as $match){
+            /** @var Rencontre $match */
+            if ($match->getEnregistre()){
+                $coach1 = $match->getCoach1()->getName();
+                $coach2 = $match->getCoach2()->getName();
+                $TDcoach1 = $resultat[$coach1]['TD'] + $match->getScoreCoach1();
+                $TDcoach2 = $resultat[$coach2]['TD'] + $match->getScoreCoach2();
+                $Sortiescoach1 = $resultat[$coach1]['Sorties'] + $match->getSortiesCoach1();
+                $Sortiescoach2 = $resultat[$coach2]['Sorties'] + $match->getSortiesCoach2();
+                $Pointcoach1 = $resultat[$coach1]['Points'];
+                $Pointcoach2 = $resultat[$coach2]['Points'];
+
+                //TODO
+                // fichier de conf sur les points attribués a :
+                // Victoire
+                // Nul
+                // Defaite
+                if ($match->getScoreCoach1() > $match->getScoreCoach2()){
+                    $Pointcoach1 = $Pointcoach1 + 3;
+                }
+                elseif ($match->getScoreCoach1() == $match->getScoreCoach2()) {
+                    $Pointcoach1 = $Pointcoach1 + 1;
+                    $Pointcoach2 = $Pointcoach2 + 1;
+                } else {
+                    $Pointcoach2 = $Pointcoach2 + 3;
+                }
+
+                $resultat[$coach1]['Points'] = $Pointcoach1;
+                $resultat[$coach2]['Points'] = $Pointcoach2;
+                $resultat[$coach1]['TD'] = $TDcoach1;
+                $resultat[$coach2]['TD'] = $TDcoach2;
+                $resultat[$coach2]['Sorties'] = $Sortiescoach2;
+                $resultat[$coach1]['Sorties'] = $Sortiescoach1;
+                $resultat[$coach1]['Departage'] = $TDcoach1 + $Sortiescoach1;
+                $resultat[$coach2]['Departage'] = $TDcoach2 + $Sortiescoach2;
+            }
+        }
+
+        // tri du resultat en fonction des points puis de la valeur de departage (ascendant)
+        uasort($resultat, function($a, $b){
+            $retval = $a['Points'] <=> $b['Points'];
+            if ($retval == 0){
+                $retval = $a['Departage'] <=> $b['Departage'];
+            }
+            return $retval;
+        });
+        // inversion du tri
+        arsort($resultat);
+
+        return $this->render('RJBloodbowl/classement.html.twig', [
+            'resultat' => $resultat
+        ]);
+    }
     /**
      * Renvoie la saison demandé ou la derniere s'il n'y a pas parametres ou que le parametre est KO
      * 
@@ -163,8 +236,7 @@ class LigueController extends Controller
      * @param int $qualif Nombre de jours pour la phase de qualif
      */
     private function creationJournees($saison, $poules, $qualif){
-        //TODO : Gerer plusieurs poules et nombre de joueurs impairs
-        //TODO: Faire un random sur les participants ?
+        //TODO : Gerer plusieurs poules
         $participants = $saison->getParticipants();
         if(count($participants) < 2){
             return [];
@@ -184,10 +256,6 @@ class LigueController extends Controller
         // creation de toutes les journees de la saison
         // et des rencontres associes
         for ($i=1; $i <= $qualif; $i++) {
-            if (count($participants) % 2 === 1){
-                // nb de participants impair, il faut en exclure un par journée
-                // a chaque journee, ce doit etre une personne differente
-            }
 
             // creation de la journee
             $journee = new Journee();

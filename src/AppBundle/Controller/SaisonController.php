@@ -27,6 +27,10 @@ class SaisonController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($saison);
             $entityManager->flush();
+
+            $this->addFlash('notice', 'Saison créée');
+
+            return $this->redirect($request->getUri());
         }
 
         return $this->render('RJBloodbowl/new_saison.html.twig', [
