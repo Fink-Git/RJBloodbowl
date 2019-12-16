@@ -1,20 +1,53 @@
-table.planning {
-    width: 20%;
+@font-face{
+    font-family: 'gutcruncherregular';
+    src: url('fonts/gutcruncher-webfont.woff2') format('woff2'),
+         url('fonts/gutcruncher-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+/**********************/
+/* Pour tout le site */
+/**********************/
+body{
+    font-family: 'gutcruncherregular', Arial, sans-serif;
+    font-weight: normal;
+    font-style: normal;
+}
+
+table {
+    width: 100%;
     border: 1px solid black;
 }
 
-table.planning > tbody > tr {
+table > tbody > tr {
     border: 1px solid black;
     text-align: center;
 }
 
-table.planning > tbody > tr > th {
+table > tbody > tr > th {
     border: 1px solid black;
+}
+
+table > tbody > tr > td {
+    border: 1px solid black;
+}
+
+div.bodyBlock {
+    margin: 30px;
+}
+
+div.evidence {
+    font-weight: bold;
+}
+/*************************/
+/* Calendrier de saison */
+/*************************/
+table.planning > tbody > tr > th {
     background-color: grey;
 }
 
 table.planning > tbody > tr > td {
-    border: 1px solid black;
+    width: 50%;
 }
 
 td.victoire {
@@ -22,6 +55,13 @@ td.victoire {
     font-weight: bold;
 }
 
+div.affichageJournee {
+    display: inline-block;
+    width : 32%
+}
+/******************************/
+/* enregistrement des matchs */
+/******************************/
 select > option.match_joue {
     background-color: #99cc99;
 }
@@ -34,7 +74,17 @@ div.saisie_match {
     display: inline-block;
     width: 49%;
 }
-
-div.evidence {
-    font-weight: bold;
+/******************************/
+/* classement */
+/******************************/
+table.resultat > tbody > tr > td {
+    width: 20%;
 }
+
+table.resultat > tbody > tr:nth-child(2n+2) {
+    background-color: #f0f0f0;
+}
+
+
+
+

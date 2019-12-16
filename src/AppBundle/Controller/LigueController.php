@@ -211,6 +211,7 @@ class LigueController extends Controller
             'resultat' => $resultat
         ]);
     }
+    
     /**
      * Renvoie la saison demandé ou la derniere s'il n'y a pas parametres ou que le parametre est KO
      * 

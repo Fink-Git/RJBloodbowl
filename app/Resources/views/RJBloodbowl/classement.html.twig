@@ -1,19 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-
-    <link href="{{ asset('css/rjbloodbowl.css') }}" rel="stylesheet"/>
-{% endblock %}
-
 {% block body %}
-    <table class="planning">
-    <th>
-        <td>Points</td>
-        <td>TD</td>
-        <td>Sorties</td>
-        <td>Departage</td>
-    </th>
+    <table class="resultat">
+    <tr>
+        <th></th>
+        <th>Points</th>
+        <th>TD</th>
+        <th>Sorties</th>
+        <th>Departage</th>
+    </tr>
     {% for key, coach in resultat %}
     <tr>
         <td>{{ key }}</td>

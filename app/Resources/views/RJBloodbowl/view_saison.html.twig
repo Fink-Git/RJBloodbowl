@@ -1,5 +1,6 @@
 {# TODO : colorisation du gagnant dans le tableau #}
     {% for key, journee in saison %}
+    <div class="affichageJournee">
         <table class="planning">
         <th colspan = 2> {{ key }} </th>
         {% for rencontre in journee %}
@@ -9,5 +10,5 @@
             </tr>
         {% endfor %}
         </table>
-        <br/>
+    </div>
     {% endfor %}

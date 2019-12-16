@@ -1,11 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-
-    <link href="{{ asset('css/rjbloodbowl.css') }}" rel="stylesheet"/>
-{% endblock %}
-
 {% block body %}
     {% if action == 'view' %}
         {% include('RJBloodbowl/view_saison.html.twig') %}
@@ -17,5 +11,5 @@
 
 {% block javascripts %} 
     {{ parent() }}
-    <script src="{{ asset('js/rjbloodbowl.js')}}"></script>
+    <script src="{{ asset('js/affichage.js')}}"></script>
 {% endblock %}
