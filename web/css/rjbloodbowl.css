@@ -42,10 +42,6 @@ div.evidence {
 /*************************/
 /* Calendrier de saison */
 /*************************/
-table.planning > tbody > tr > th {
-    background-color: grey;
-}
-
 table.planning > tbody > tr > td {
     width: 50%;
 }
@@ -81,9 +77,9 @@ table.resultat > tbody > tr > td {
     width: 20%;
 }
 
-table.resultat > tbody > tr:nth-child(2n+2) {
+/* table.resultat > tbody > tr:nth-child(2n+2) {
     background-color: #f0f0f0;
-}
+} */
 
 
 

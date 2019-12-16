@@ -2,7 +2,7 @@
     {% for key, journee in saison %}
     <div class="affichageJournee">
         <table class="planning">
-        <th colspan = 2> {{ key }} </th>
+        <th colspan = 2 class="thead-dark"> {{ key }} </th>
         {% for rencontre in journee %}
             <tr>
                 <td> {{ rencontre.coach1.name }} </td>
