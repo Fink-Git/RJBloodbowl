@@ -19,6 +19,10 @@ body{
     height: 100%;
 }
 
+.form-control {
+    width: 40%;
+}
+
 table > thead > tr {
     text-align: center;
 }
@@ -78,6 +82,7 @@ div.affichageJournee {
 /******************************/
 /* enregistrement des matchs */
 /******************************/
+
 select > option.match_joue {
     background-color: #99cc99;
 }
@@ -88,7 +93,11 @@ select > option.match_non_joue {
 
 div.saisie_match {
     display: inline-block;
-    width: 49%;
+    width: 20%;
+}
+
+div.saisie_match > div > input.form-control {
+    width: 25%;
 }
 /******************************/
 /* classement */
