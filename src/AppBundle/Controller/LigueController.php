@@ -145,6 +145,9 @@ class LigueController extends Controller
     public function classementAction($saisonid=null){
         /** @var Saison $saison */
         $saison = $this->saisonParDefaut($saisonid);
+        $ptvictoire = $this->getParameter('app.victoire');
+        $ptdefaite = $this->getParameter('app.defaite');
+        $ptnul = $this->getParameter('app.nul');
 
         $matches = $this->getDoctrine()->getRepository('AppBundle:Rencontre')->getAllFromSaison($saison->getId());        
         $coachs = $saison->getParticipants();
@@ -170,19 +173,14 @@ class LigueController extends Controller
                 $Pointcoach1 = $resultat[$coach1]['Points'];
                 $Pointcoach2 = $resultat[$coach2]['Points'];
 
-                //TODO
-                // fichier de conf sur les points attribués a :
-                // Victoire
-                // Nul
-                // Defaite
                 if ($match->getScoreCoach1() > $match->getScoreCoach2()){
-                    $Pointcoach1 = $Pointcoach1 + 3;
+                    $Pointcoach1 = $Pointcoach1 + $ptvictoire;
                 }
                 elseif ($match->getScoreCoach1() == $match->getScoreCoach2()) {
-                    $Pointcoach1 = $Pointcoach1 + 1;
-                    $Pointcoach2 = $Pointcoach2 + 1;
+                    $Pointcoach1 = $Pointcoach1 + $ptnul;
+                    $Pointcoach2 = $Pointcoach2 + $ptnul;
                 } else {
-                    $Pointcoach2 = $Pointcoach2 + 3;
+                    $Pointcoach2 = $Pointcoach2 + $ptdefaite;
                 }
 
                 $resultat[$coach1]['Points'] = $Pointcoach1;
@@ -212,6 +210,7 @@ class LigueController extends Controller
         ]);
     }
     
+
     /**
      * Renvoie la saison demandé ou la derniere s'il n'y a pas parametres ou que le parametre est KO
      * 
@@ -220,12 +219,12 @@ class LigueController extends Controller
      */
     private function saisonParDefaut($saisonid){
         if (empty($saisonid) | !is_numeric($saisonid)){
-            $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->getDerniereSaison();
+            $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->find($this->getParameter('app.idSaisonCourante'));
         }
         else{
             $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->find($saisonid);
             if (empty($saison)){
-                $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->getDerniereSaison();
+                $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->find($this->getParameter('app.idSaisonCourante'));;
             }
         }
         return $saison;

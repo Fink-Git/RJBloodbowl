@@ -8,32 +8,43 @@
 /**********************/
 /* Pour tout le site */
 /**********************/
+html{
+    height: 100%;
+}
+
 body{
     font-family: 'gutcruncherregular', Arial, sans-serif;
     font-weight: normal;
     font-style: normal;
+    height: 100%;
 }
 
-table {
-    width: 100%;
-    border: 1px solid black;
-}
-
-table > tbody > tr {
-    border: 1px solid black;
+table > thead > tr {
     text-align: center;
 }
 
-table > tbody > tr > th {
-    border: 1px solid black;
-}
-
-table > tbody > tr > td {
-    border: 1px solid black;
+table > tbody > tr {
+    text-align: center;
 }
 
 div.bodyBlock {
     margin: 30px;
+    height: 100%;
+    
+}
+
+div.bodyBlock::after{
+    content: "";
+    background: url('../public/Ligue_tenaille1.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
 }
 
 div.evidence {
@@ -44,11 +55,20 @@ div.evidence {
 /*************************/
 table.planning > tbody > tr > td {
     width: 50%;
+    border-color: black;
 }
 
 td.victoire {
     background-color: #99cc99;
     font-weight: bold;
+}
+
+td.defaite {
+    background-color: #ff9999;
+}
+
+td.nul {
+    background-color: #dba9a9;
 }
 
 div.affichageJournee {
@@ -75,11 +95,10 @@ div.saisie_match {
 /******************************/
 table.resultat > tbody > tr > td {
     width: 20%;
+    border-color: black;
+    font-size: 1.2em;
 }
 
-/* table.resultat > tbody > tr:nth-child(2n+2) {
-    background-color: #f0f0f0;
-} */
 
 
 

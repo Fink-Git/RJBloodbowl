@@ -1,14 +1,41 @@
 {# TODO : colorisation du gagnant dans le tableau #}
     {% for key, journee in saison %}
     <div class="affichageJournee">
-        <table class="planning">
-        <th colspan = 2 class="thead-dark"> {{ key }} </th>
+        <table class="planning table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th colspan = 2 > {{ key }} </th>
+            </tr>
+        </thead>
+        <tbody>
         {% for rencontre in journee %}
             <tr>
-                <td> {{ rencontre.coach1.name }} </td>
-                <td> {{ rencontre.coach2.name }} </td>
+                <td
+                    {% if rencontre.enregistre %}
+                        {% if rencontre.ScoreCoach1 > rencontre.ScoreCoach2 %}
+                            class="victoire"
+                        {% elseif rencontre.ScoreCoach1 < rencontre.ScoreCoach2 %}
+                            class="defaite"
+                        {% else %}
+                            class="nul"
+                        {% endif %}
+                    {% endif %}
+                > 
+                {{ rencontre.coach1.name }} </td>
+                <td
+                    {% if rencontre.enregistre %}
+                        {% if rencontre.ScoreCoach2 > rencontre.ScoreCoach1 %}
+                            class="victoire"
+                        {% elseif rencontre.ScoreCoach2 < rencontre.ScoreCoach1 %}
+                            class="defaite"
+                        {% else %}
+                            class="nul"
+                        {% endif %}
+                    {% endif %}
+                > {{ rencontre.coach2.name }} </td>
             </tr>
         {% endfor %}
+        </tbody>
         </table>
     </div>
     {% endfor %}

@@ -1,22 +1,26 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <table class="resultat table-striped">
-    <tr>
-        <th></th>
-        <th>Points</th>
-        <th>TD</th>
-        <th>Sorties</th>
-        <th>Departage</th>
-    </tr>
-    {% for key, coach in resultat %}
-    <tr>
-        <td>{{ key }}</td>
-        <td>{{ coach.Points }}</td>
-        <td>{{ coach.TD }}</td>
-        <td>{{ coach.Sorties }}</td>
-        <td>{{ coach.Departage }}</td>
-    </tr>
-    {% endfor %}
+    <table class="resultat table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th></th>
+            <th>Points</th>
+            <th>TD</th>
+            <th>Sorties</th>
+            <th>Departage</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, coach in resultat %}
+        <tr>
+            <td>{{ key }}</td>
+            <td>{{ coach.Points }}</td>
+            <td>{{ coach.TD }}</td>
+            <td>{{ coach.Sorties }}</td>
+            <td>{{ coach.Departage }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
     </table>
 {% endblock %}
