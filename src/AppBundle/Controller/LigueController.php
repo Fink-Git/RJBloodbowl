@@ -175,12 +175,14 @@ class LigueController extends Controller
 
                 if ($match->getScoreCoach1() > $match->getScoreCoach2()){
                     $Pointcoach1 = $Pointcoach1 + $ptvictoire;
+                    $Pointcoach2 = $Pointcoach2 + $ptdefaite;
                 }
                 elseif ($match->getScoreCoach1() == $match->getScoreCoach2()) {
                     $Pointcoach1 = $Pointcoach1 + $ptnul;
                     $Pointcoach2 = $Pointcoach2 + $ptnul;
                 } else {
-                    $Pointcoach2 = $Pointcoach2 + $ptdefaite;
+                    $Pointcoach2 = $Pointcoach2 + $ptvictoire;
+                    $Pointcoach1 = $Pointcoach1 + $ptdefaite;
                 }
 
                 $resultat[$coach1]['Points'] = $Pointcoach1;
