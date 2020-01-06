@@ -59,10 +59,12 @@
                 <button id="adminButton" class="btn btn-sm btn-outline-secondary" type="submit">Admin Mode</button>
             </div>
         </nav>
-        {% for message in app.flashes('notice') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
         {% endfor %}
         <div class='bodyBlock'>
             {% block body %}{% endblock %}

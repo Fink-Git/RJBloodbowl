@@ -28,7 +28,7 @@ class SaisonController extends Controller
             $entityManager->persist($saison);
             $entityManager->flush();
 
-            $this->addFlash('notice', 'Saison créée');
+            $this->addFlash('success', 'Saison créée');
 
             return $this->redirect($request->getUri());
         }

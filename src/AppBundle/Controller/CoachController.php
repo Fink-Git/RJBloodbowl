@@ -28,7 +28,7 @@ class CoachController extends Controller
             $entityManager->persist($coach);
             $entityManager->flush();
 
-            $this->addFlash('notice', 'Coach créé');
+            $this->addFlash('success', 'Coach créé');
 
             return $this->redirect($request->getUri());
         }

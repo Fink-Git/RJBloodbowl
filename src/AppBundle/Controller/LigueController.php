@@ -42,7 +42,7 @@ class LigueController extends Controller
             $saison->addParticipant($coach);
             $this->getDoctrine()->getManager()->flush();
             
-            $this->addFlash('notice', 'Le coach ' . $coach->getName() . ' participe a ' . $saison->getName());
+            $this->addFlash('success', 'Le coach ' . $coach->getName() . ' participe a ' . $saison->getName());
 
             return $this->redirect($request->getUri());
         }
@@ -65,15 +65,20 @@ class LigueController extends Controller
             $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')
                 ->find($form->get('saison')->getData());
 
-            $this->creationJournees($saison, 
-                                    $form->get('nbPoule')->getData(),
-                                    $form->get('nbQualif')->getData());
+            if (empty($saison->getJournees())){
+                $this->creationJournees($saison, 
+                                        $form->get('nbPoule')->getData(),
+                                        $form->get('nbQualif')->getData());
 
-            // redirection pour l'affichage des journees
-            return $this->redirectToRoute('affichageSaison', [
-                'saisonid' => $saison->getId(),
-                'action' => 'view'
-                ]) ;
+                // redirection pour l'affichage des journees
+                return $this->redirectToRoute('affichageSaison', [
+                    'saisonid' => $saison->getId(),
+                    'action' => 'view'
+                    ]) ;
+            }
+            else {
+                $this->addFlash('danger', 'Le tirage au sort a déja été effectué pour cette saison');
+            }
         }   
 
         return $this->render('RJBloodbowl/tirage.html.twig', [
@@ -122,7 +127,7 @@ class LigueController extends Controller
                 $match->setEnregistre(true);
                 $this->getDoctrine()->getManager()->flush();
 
-                $this->addFlash('notice', 'Match enregistré');
+                $this->addFlash('success', 'Match enregistré');
 
                 return $this->redirect($request->getUri());
             }

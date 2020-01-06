@@ -28,7 +28,7 @@ class CycleController extends Controller
             $entityManager->persist($cycle);
             $entityManager->flush();
 
-            $this->addFlash('notice', 'Cycle créé');
+            $this->addFlash('success', 'Cycle créé');
 
             return $this->redirect($request->getUri());
         }
