@@ -15,8 +15,10 @@ $(document).ready(function(){
 function inforencontre(idrencontre){
     $.ajax({
         type: 'POST',
-        //TODO remplacer par app.php
-        url: 'https://' + window.location.hostname + '/rjbloodbowl/Rencontre/info',
+        //PROD
+        //url: 'https://' + window.location.hostname + '/rjbloodbowl/Rencontre/info',
+        //DEV
+        url: 'http://' + window.location.hostname + '/app_dev.php/Rencontre/info',
         data: {
             'idrencontre': idrencontre
         },

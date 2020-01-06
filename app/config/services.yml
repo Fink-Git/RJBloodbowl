@@ -3,7 +3,7 @@
 parameters:
     #parameter_name: value
     # id de la saison courante
-    app.idSaisonCourante: 2
+    app.idSaisonCourante: 1
     # nb de point que vaut une victoire
     app.victoire: 3
     # nb de point que vaut une defaite
