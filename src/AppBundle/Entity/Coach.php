@@ -35,6 +35,11 @@ class Coach
     private $saisons;
 
     /**
+     * @ORM\OneToMany(targetEntity="Equipe", mappedBy="coach") 
+     */
+    private $equipes;
+
+    /**
      * Get id
      *
      * @return int
@@ -107,7 +112,44 @@ class Coach
      */
     public function __construct()
     {
-        $this->saisons = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->saisons = new ArrayCollection();
+        $this->equipes = new ArrayCollection();
     }
 
+
+    /**
+     * Add equipe.
+     *
+     * @param \AppBundle\Entity\Equipe $equipe
+     *
+     * @return Coach
+     */
+    public function addEquipe(\AppBundle\Entity\Equipe $equipe)
+    {
+        $this->equipes[] = $equipe;
+
+        return $this;
+    }
+
+    /**
+     * Remove equipe.
+     *
+     * @param \AppBundle\Entity\Equipe $equipe
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeEquipe(\AppBundle\Entity\Equipe $equipe)
+    {
+        return $this->equipes->removeElement($equipe);
+    }
+
+    /**
+     * Get equipes.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEquipes()
+    {
+        return $this->equipes;
+    }
 }
