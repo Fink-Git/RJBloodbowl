@@ -24,14 +24,14 @@ class Position
 
     /**
      * @ORM\ManyToOne(targetEntity="Roster", inversedBy="positions")
-     * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="roster_id", referencedColumnName="id")
      */
     private $roster;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="titre", type="string", length=255, unique=true)
+     * @ORM\Column(name="titre", type="string", length=255)
      */
     private $titre;
 

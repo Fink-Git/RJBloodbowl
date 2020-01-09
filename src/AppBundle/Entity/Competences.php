@@ -37,7 +37,7 @@ class Competences
 
     /**
      * @ORM\ManyToOne(targetEntity="TypeCompetence", inversedBy="competences")
-     * @ORM\JoinColumn(name="competence_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      */
     private $type;
 
