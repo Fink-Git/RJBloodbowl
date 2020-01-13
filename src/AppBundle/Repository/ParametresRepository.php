@@ -10,4 +10,11 @@ namespace AppBundle\Repository;
  */
 class ParametresRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getDernierParametrage(){
+        return $this->createQueryBuilder('p')
+        ->orderBy('p.id','DESC')
+        ->setMaxResults(1)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
 }

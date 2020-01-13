@@ -4,10 +4,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Coach;
 use AppBundle\Entity\Journee;
+use AppBundle\Entity\Parametres;
 use AppBundle\Entity\Rencontre;
 use AppBundle\Entity\Saison;
 use AppBundle\Form\InscriptionType;
 use AppBundle\Form\MatchType;
+use AppBundle\Form\ParametresType;
 use AppBundle\Form\TirageType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -150,9 +152,11 @@ class LigueController extends Controller
     public function classementAction($saisonid=null){
         /** @var Saison $saison */
         $saison = $this->saisonParDefaut($saisonid);
-        $ptvictoire = $this->getParameter('app.victoire');
-        $ptdefaite = $this->getParameter('app.defaite');
-        $ptnul = $this->getParameter('app.nul');
+        /** @var Parametres $parametrage */
+        $parametrage = $this->getDoctrine()->getRepository('AppBundle:Parametres')->getDernierParametrage();
+        $ptvictoire = $parametrage->getPtVictoire();
+        $ptdefaite = $parametrage->getPtDefaite();
+        $ptnul = $parametrage->getPtNul();
 
         $matches = $this->getDoctrine()->getRepository('AppBundle:Rencontre')->getAllFromSaison($saison->getId());        
         $coachs = $saison->getParticipants();
@@ -217,6 +221,44 @@ class LigueController extends Controller
         ]);
     }
     
+    /**
+     * @Route(
+     *      "/Admin/Ligue/Parametrage",
+     *      name="parametrage"
+     * )
+     */
+    public function ParametrageAction(Request $request)
+    {
+        $parametrage = $this->getDoctrine()->getRepository('AppBundle:Parametres')->getDernierParametrage();
+
+        if (empty($parametrage)){
+            $parametrage = new Parametres();
+        }
+
+        $form = $this->createForm(ParametresType::class, $parametrage);
+
+        // on recupere la soumission de l'utilisateur
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            // Creation d'un nouveau parametrage
+            $nvparametrage = new Parametres();
+            $nvparametrage->setSaisonCourante($form->get('saisonCourante')->getData());
+            $nvparametrage->setPtDefaite($form->get('ptDefaite')->getData());
+            $nvparametrage->setPtNul($form->get('ptNul')->getData());
+            $nvparametrage->setPtVictoire($form->get('ptVictoire')->getData());
+            $nvparametrage->setTresorerieInitiale($form->get('tresorerieInitiale')->getData());
+            $entityManager = $this->getDoctrine()->getManager();
+            // volonté de creer un nouvel enregistrement
+            $entityManager->persist($nvparametrage);
+            // sauvegarde
+            $entityManager->flush();
+        }
+
+        return $this->render('RJBloodbowl/parametrage.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 
     /**
      * Renvoie la saison demandé ou la derniere s'il n'y a pas parametres ou que le parametre est KO
@@ -225,13 +267,15 @@ class LigueController extends Controller
      * @return Saison $saison Objet Saison 
      */
     private function saisonParDefaut($saisonid){
-        if (empty($saisonid) | !is_numeric($saisonid)){
-            $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->find($this->getParameter('app.idSaisonCourante'));
+        /** @var Parametres $parametrage */
+        $parametrage = $this->getDoctrine()->getRepository('AppBundle:Parametres')->getDernierParametrage();
+        if (empty($saisonid) | !is_numeric($saisonid)){            
+            $saison = $parametrage->getSaisonCourante();
         }
         else{
             $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->find($saisonid);
             if (empty($saison)){
-                $saison = $this->getDoctrine()->getRepository('AppBundle:Saison')->find($this->getParameter('app.idSaisonCourante'));;
+                $saison = $parametrage->getSaisonCourante();
             }
         }
         return $saison;

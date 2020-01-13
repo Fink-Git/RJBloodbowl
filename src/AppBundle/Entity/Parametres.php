@@ -22,9 +22,8 @@ class Parametres
     private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="saisonCourante", type="integer")
+     * @ORM\ManyToOne(targetEntity="Saison")
+     * @ORM\JoinColumn(name="saison_id", referencedColumnName="id")
      */
     private $saisonCourante;
 
@@ -68,12 +67,10 @@ class Parametres
     }
 
     /**
-     * Set saisonCourante.
+     * Set the value of saison
      *
-     * @param int $saisonCourante
-     *
-     * @return Parametres
-     */
+     * @return  self
+     */ 
     public function setSaisonCourante($saisonCourante)
     {
         $this->saisonCourante = $saisonCourante;
@@ -83,8 +80,6 @@ class Parametres
 
     /**
      * Get saisonCourante.
-     *
-     * @return int
      */
     public function getSaisonCourante()
     {
