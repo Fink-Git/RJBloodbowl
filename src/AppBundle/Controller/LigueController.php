@@ -212,6 +212,12 @@ class LigueController extends Controller
         // inversion du tri
         arsort($resultat);
 
+        foreach ($resultat as $key => $r){
+            $cid = $this->getDoctrine()->getRepository('AppBundle:Coach')->getCoachIdByName($key); 
+            $nbmatch =  $this->getDoctrine()->getRepository('AppBundle:Rencontre')->getMatchsJoues($saison->getId(), $cid);
+            $resultat[$key]['nbmatch'] = $nbmatch;
+        }
+
         return $this->render('RJBloodbowl/classement.html.twig', [
             'resultat' => $resultat
         ]);

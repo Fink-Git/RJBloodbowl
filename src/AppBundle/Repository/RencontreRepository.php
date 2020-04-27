@@ -12,6 +12,9 @@ use Doctrine\ORM\Query\Expr\Join;
  */
 class RencontreRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * 
+     */
     public function getAllFromSaison($saisonid){
         $qb = $this->createQueryBuilder('r')
             ->leftJoin('AppBundle\Entity\Journee', 'j', Join::WITH ,'r.journee = j.id')
@@ -20,5 +23,27 @@ class RencontreRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('saisonid', $saisonid);
         
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * 
+     */
+    public function getMatchsJoues($saisonid, $coachid){
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('count(r.id)')
+            ->from('AppBundle\Entity\Rencontre', 'r')
+            ->leftJoin('AppBundle\Entity\Journee', 'j', Join::WITH ,'r.journee = j.id')
+            ->leftJoin('AppBundle\Entity\Saison', 's', Join::WITH, 'j.saison = s.id')
+            ->leftJoin('AppBundle\Entity\Coach', 'c1', Join::WITH, 'r.coach1 = c1.id')
+            ->leftJoin('AppBundle\Entity\Coach', 'c2', Join::WITH, 'r.coach2 = c2.id')
+            ->where('s.id = :saisonid')
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->eq('c1.id', $coachid),
+                $qb->expr()->eq('c2.id', $coachid)))
+            ->andWhere('r.enregistre = 1')
+            ->setParameter('saisonid',$saisonid); 
+
+        $result = $qb->getDQL();
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }

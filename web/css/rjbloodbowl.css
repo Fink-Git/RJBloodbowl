@@ -33,7 +33,7 @@ table > tbody > tr {
 
 div.bodyBlock {
     margin: 30px;
-    height: 100%;
+    height: 85%;
     
 }
 
@@ -53,6 +53,19 @@ div.bodyBlock::after{
 
 div.evidence {
     font-weight: bold;
+}
+
+div.footer {
+    text-align: center;
+}
+
+span a {
+    display: inline-block;
+    color: #6c757d;
+}
+
+span.version {
+    float: right;
 }
 /*************************/
 /* Calendrier de saison */
