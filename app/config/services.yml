@@ -10,6 +10,8 @@ parameters:
     app.defaite: 0
     # nb de point que vaut un match nul
     app.nul: 1
+    # version de l'appli
+    app.version: v1.2
 
 services:
     # default configuration for services in *this* file

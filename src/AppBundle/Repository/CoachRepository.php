@@ -10,4 +10,14 @@ namespace AppBundle\Repository;
  */
 class CoachRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getCoachIdByName($coachName){
+        $qb = $this->createQueryBuilder('c')
+        ->where('c.name = :coachname')
+        ->setParameter('coachname', $coachName);
+    
+        // $dql = $qb->getDQL();
+        $result = $qb->getQuery()->setMaxResults(1)->getOneOrNullResult();
+
+        return $result->getId();
+    }
 }

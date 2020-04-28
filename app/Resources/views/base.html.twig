@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Ligue de la Tenaille - Entrez a vos risques et périls{% endblock %}</title>
         {% block stylesheets %}
             <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -59,13 +60,25 @@
                 <button id="adminButton" class="btn btn-sm btn-outline-secondary" type="submit">Admin Mode</button>
             </div>
         </nav>
-        {% for message in app.flashes('notice') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
         {% endfor %}
         <div class='bodyBlock'>
             {% block body %}{% endblock %}
+        </div>
+        <div class="footer">
+            <span class="text-muted">
+                <span class="liens">
+                    <a href="http://rennes-jeux.forumactif.com/f16-bloodbowl" target="_blank">Bloodbowl sur le forum RennesJeux</a>
+                </span> 
+                <span class="version">
+                    {{ version }}
+                </span>
+            </span>
         </div>
         {% block javascripts %}
             <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
